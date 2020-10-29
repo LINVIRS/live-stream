@@ -1,30 +1,67 @@
 <template>
-	<view class="flex align-center" style="width: 600rpx; height: 120rpx; ">
-		<view class="flex ml-1 align-center justify-center" style="width: 400rpx; height: 100rpx;background-image: linear-gradient(to right, #aaabbe, #85a9dd); border-radius: 80rpx;">
-			<image src="../../static/gift/4.png" style="width: 92rpx; height: 92rpx; margin: 8rpx; " class=" rounded-circle "></image>
-			<view class="flex-column flex flex-1 justify-center" >
-				
-				<text style="font-size: 34rpx; color: white;" >观众</text>
-				<text  style=" color: white;">宋丹丹	</text>
-			</view>
-			<image src="../../static/gift/4.png" style="width: 92rpx; height: 92rpx; margin: 8rpx; " class=" rounded-circle "></image>
-		</view>
-	<view class="flex">
-		<text class="mr-2 ml-1" style="font-size: 45rpx;color: rgb(203, 161, 55);" >X</text>
-			<text style="font-size: 45rpx;color: rgb(203, 161, 55);" >10</text>
-	</view>
-	</view>
+  <list style="width: 520rpx;height: 500rpx;" :show-scrollbar="false" :bounce="false">
+    <cell
+      class="flex align-center px-3 pt-3"
+      v-for="(item, index) in gifts"
+      :key="index"
+      insert-animation="default"
+      delete-animation="default"
+      :ref="'item' + index"
+    >
+      <view
+        style="width: 325rpx;background-image: linear-gradient(to right,#BCABB1,#65AAF0);"
+        class="flex rounded-circle"
+      >
+      <view class="p">
+        <image :src="item.avatar || defaultAvatar" style="width: 70rpx;height: 70rpx;" class="rounded-circle"></image>
+      </view>
+      <view class="flex-1 flex flex-column justify-center">
+        <text class="text-white font">{{item.username}}</text>
+        <text class="text-white font-sm">送{{item.gift_name}}</text>
+      </view>
+      <view class="p">
+        <image :src="item.gift_image" style="width: 70rpx; height: 70rpx;" class="rounded-circle"></image>
+      </view>
+      </view>
+      <text class="text-warning font-lg ml-1">X{{item.num}}</text>
+    </cell>
+  </list>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				
-			};
-		}
-	}
+	// 操作dom操作
+const dom = weex.requireModule('dom');
+export default {
+  data() {
+    return {
+      defaultAvatar: '/static/meitu.jpg',
+      gifts: []
+    };
+  },
+  methods: {
+    send(gift) {
+      this.gifts.push(gift);
+      this.toBottom();
+      this.autoHide();
+    },
+    toBottom() {
+      this.$nextTick(() => {
+        let index = this.gifts.length - 1;
+        let ref = 'item' + index;
+        if (this.$refs[ref]) {
+          dom.scrollToElement(this.$refs[ref][0], {});
+        }
+      });
+    },
+    autoHide() {
+      if (this.gifts.length) {
+        let timer = setTimeout(() => {
+          this.gifts.splice(0, 1);
+        }, 5000);
+      }
+    }
+  }
+};
 </script>
 
-<style>
-</style>
+<style></style>

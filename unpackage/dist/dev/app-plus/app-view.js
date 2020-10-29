@@ -1562,84 +1562,101 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-uni-view",
-    {
-      staticClass: _vm._$g(0, "sc"),
-      staticStyle: { width: "600rpx", height: "120rpx" },
-      attrs: { _i: 0 }
-    },
-    [
-      _c(
-        "v-uni-view",
+    "list",
+    { staticStyle: { width: "520rpx", height: "500rpx" }, attrs: { _i: 0 } },
+    _vm._l(_vm._$g(1, "f"), function(item, index, $20, $30) {
+      return _c(
+        "cell",
         {
-          staticClass: _vm._$g(1, "sc"),
-          staticStyle: {
-            width: "400rpx",
-            height: "100rpx",
-            "background-image": "linear-gradient(to right, #aaabbe, #85a9dd)",
-            "border-radius": "80rpx"
-          },
-          attrs: { _i: 1 }
+          key: item,
+          ref: _vm._$g("1-" + $30, "ref"),
+          refInFor: true,
+          staticClass: _vm._$g("1-" + $30, "sc"),
+          attrs: { _i: "1-" + $30 }
         },
         [
-          _c("v-uni-image", {
-            staticClass: _vm._$g(2, "sc"),
-            staticStyle: { width: "92rpx", height: "92rpx", margin: "8rpx" },
-            attrs: { src: _vm._$g(2, "a-src"), _i: 2 }
-          }),
           _c(
             "v-uni-view",
-            { staticClass: _vm._$g(3, "sc"), attrs: { _i: 3 } },
+            {
+              staticClass: _vm._$g("2-" + $30, "sc"),
+              staticStyle: {
+                width: "325rpx",
+                "background-image": "linear-gradient(to right,#BCABB1,#65AAF0)"
+              },
+              attrs: { _i: "2-" + $30 }
+            },
             [
               _c(
-                "v-uni-text",
+                "v-uni-view",
                 {
-                  staticStyle: { "font-size": "34rpx", color: "white" },
-                  attrs: { _i: 4 }
+                  staticClass: _vm._$g("3-" + $30, "sc"),
+                  attrs: { _i: "3-" + $30 }
                 },
-                [_vm._v("观众")]
+                [
+                  _c("v-uni-image", {
+                    staticClass: _vm._$g("4-" + $30, "sc"),
+                    staticStyle: { width: "70rpx", height: "70rpx" },
+                    attrs: { src: _vm._$g("4-" + $30, "a-src"), _i: "4-" + $30 }
+                  })
+                ],
+                1
               ),
               _c(
-                "v-uni-text",
-                { staticStyle: { color: "white" }, attrs: { _i: 5 } },
-                [_vm._v("宋丹丹")]
+                "v-uni-view",
+                {
+                  staticClass: _vm._$g("5-" + $30, "sc"),
+                  attrs: { _i: "5-" + $30 }
+                },
+                [
+                  _c(
+                    "v-uni-text",
+                    {
+                      staticClass: _vm._$g("6-" + $30, "sc"),
+                      attrs: { _i: "6-" + $30 }
+                    },
+                    [_vm._v(_vm._$g("6-" + $30, "t0-0"))]
+                  ),
+                  _c(
+                    "v-uni-text",
+                    {
+                      staticClass: _vm._$g("7-" + $30, "sc"),
+                      attrs: { _i: "7-" + $30 }
+                    },
+                    [_vm._v("送" + _vm._$g("7-" + $30, "t0-0"))]
+                  )
+                ],
+                1
+              ),
+              _c(
+                "v-uni-view",
+                {
+                  staticClass: _vm._$g("8-" + $30, "sc"),
+                  attrs: { _i: "8-" + $30 }
+                },
+                [
+                  _c("v-uni-image", {
+                    staticClass: _vm._$g("9-" + $30, "sc"),
+                    staticStyle: { width: "70rpx", height: "70rpx" },
+                    attrs: { src: _vm._$g("9-" + $30, "a-src"), _i: "9-" + $30 }
+                  })
+                ],
+                1
               )
             ],
             1
           ),
-          _c("v-uni-image", {
-            staticClass: _vm._$g(6, "sc"),
-            staticStyle: { width: "92rpx", height: "92rpx", margin: "8rpx" },
-            attrs: { src: _vm._$g(6, "a-src"), _i: 6 }
-          })
-        ],
-        1
-      ),
-      _c(
-        "v-uni-view",
-        { staticClass: _vm._$g(7, "sc"), attrs: { _i: 7 } },
-        [
           _c(
             "v-uni-text",
             {
-              staticClass: _vm._$g(8, "sc"),
-              staticStyle: { "font-size": "45rpx", color: "rgb(203, 161, 55)" },
-              attrs: { _i: 8 }
+              staticClass: _vm._$g("10-" + $30, "sc"),
+              attrs: { _i: "10-" + $30 }
             },
-            [_vm._v("X")]
-          ),
-          _c(
-            "v-uni-text",
-            {
-              staticStyle: { "font-size": "45rpx", color: "rgb(203, 161, 55)" },
-              attrs: { _i: 9 }
-            },
-            [_vm._v("10")]
+            [_vm._v("X" + _vm._$g("10-" + $30, "t0-0"))]
           )
         ],
         1
       )
-    ],
+    }),
     1
   )
 }
