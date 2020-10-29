@@ -27,13 +27,13 @@
 		
 		<!-- 弹幕 -->
 		<view style="position: fixed;bottom: 100rpx;left: 0;width: 750rpx;height: 400rpx;" >
-			<danmu></danmu>
+			<danmu ref='danmu'></danmu>
 		</view>
 
 		<!-- 底部 -->
 		<view style="height: 120rpx;" class="flex align-center justify-between fixed-bottom ">
 			<view class="px-2">
-				<view class="btn px-3">
+				<view class="btn px-3" @click="openInput">
 					<text class="text-white font">说点什么....</text>
 				</view>
 			</view>
@@ -52,14 +52,27 @@
 				  </view>
 			</view>
 		</view>
+		<uni-popup type="bottom" ref="input">
+		      <view class="bg-white flex align-center px-3" style="height: 120rpx;">
+		        <input type="text" v-model="content" class="border rounded flex-1 px-3 font-md"
+		         placeholder="说点什么..."
+		         style="height: 80rpx;"/>
+		         <view class="flex align-center justify-center py-2 px-2 ml-3 rounded"
+		         @click="submit" :class="content === '' ? 'bg-main-disabled':'bg-main'">
+		           <text class="font text-white">发送</text>
+		         </view>
+		      </view>
+		    </uni-popup>
 	</view>
+	
 </template>
 
 <script>
 import gift from '../../components/common/gift.vue';
 import Danmu from '../../components/common/danmu.vue';
+import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue'
 export default {
-	components: { gift,Danmu },
+	components: { gift,Danmu,uniPopup},
 	mounted() {
 		//送礼物颜色
 		setInterval(() => {
@@ -75,7 +88,8 @@ export default {
 
 	data() {
 		return {
-			statusBarHeight: 0
+			statusBarHeight: 0,
+			content:''
 		};
 	},
 	onLoad() {
@@ -84,9 +98,29 @@ export default {
 		console.log(this.statusBarHeight);
 	},
 	methods: {
-		goback() {
-			uni.navigateBack({});
-		}
+//打开输入弹幕的对话框
+openInput(){
+	this.$refs.input.open()
+},
+//提交发送弹幕信息
+  submit(){
+	  if(this.content===''){
+		  return
+	  }
+	  this.$refs.danmu.send({
+		  id:Math.random()*100,
+		  name:'wanglin',
+		  content:this.content
+	  })
+	  this.content=''
+	  this.$refs.input.close()
+  },
+  //返回上一层页面
+  back(){
+	  uni.navigateBack({
+	  	delta:1
+	  });
+  }
 	}
 };
 </script>
