@@ -15,19 +15,21 @@
         }
         ,{
             "path" : "pages/live/live",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
+           "style": {
+           				"navigationBarTextStyle": "white",
+           				        "backgroundColor": "#000000",
+           				        "app-plus": {
+           				          "titleNView": false
+           				        }
+           			}
             
         }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "直播",
-		"navigationBarBackgroundColor": "#8745FF",
-		"backgroundColor": "#8745FF"
+		"navigationBarBackgroundColor": "#000000",
+		"backgroundColor": "#000000"
 	},
 	"tabBar":{
 		"color":"#707070",
