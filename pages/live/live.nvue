@@ -26,7 +26,9 @@
 		</view>
 		
 		<!-- 弹幕 -->
-		<view style="position: fixed;bottom: 100rpx;left: 0;width: 750rpx;height: 300rpx;" class="bg-main"><text>弹幕区</text></view>
+		<view style="position: fixed;bottom: 100rpx;left: 0;width: 750rpx;height: 400rpx;" >
+			<danmu></danmu>
+		</view>
 
 		<!-- 底部 -->
 		<view style="height: 120rpx;" class="flex align-center justify-between fixed-bottom ">
@@ -55,8 +57,9 @@
 
 <script>
 import gift from '../../components/common/gift.vue';
+import Danmu from '../../components/common/danmu.vue';
 export default {
-	components: { gift },
+	components: { gift,Danmu },
 	mounted() {
 		//送礼物颜色
 		setInterval(() => {
