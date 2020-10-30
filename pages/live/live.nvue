@@ -17,122 +17,174 @@
 			<text style="color: rgb(230, 219, 116);">金币</text>
 			<text style="color: white">100</text>
 		</view>
-		<view style="height: 300rpx;">
-			<gift ref="gift" style="position: absolute;"></gift>
-		</view>
-		
+		<view style="height: 300rpx;"><gift ref="gift" style="position: absolute;"></gift></view>
+
 		<view style="height: 400rpx;" :style="'margin-top:' + statusBarHeight + 'px'">
 			<video src="http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8" autoplay controls="true" class="flex-1"></video>
 		</view>
-		
+
 		<!-- 弹幕 -->
-		<view style="position: fixed;bottom: 100rpx;left: 0;width: 750rpx;height: 400rpx;" >
-			<danmu ref='danmu'></danmu>
-		</view>
+		<view style="position: fixed;bottom: 100rpx;left: 0;width: 750rpx;height: 400rpx;"><danmu ref="danmu"></danmu></view>
 
 		<!-- 底部 -->
 		<view style="height: 120rpx;" class="flex align-center justify-between fixed-bottom ">
 			<view class="px-2">
-				<view class="btn px-3" @click="openInput">
-					<text class="text-white font">说点什么....</text>
-				</view>
+				<view class="btn px-3" @click="openInput"><text class="text-white font">说点什么....</text></view>
 			</view>
 			<view class="flex align-center">
-                  <view class="btn btn-icon">
-                  	<text class="iconfont text-white " style="font-size: 40rpx;">&#xe633;</text>
-                  </view>				
-				  <view class="btn btn-icon bg-warning">
-					  <text class="iconfont">&#xe67c</text>
-				  </view>
-				  <view class="btn btn-icon ">
-				  					  <text class="iconfont text-white">&#xe7cd</text>
-				  </view>
-				  <view class="btn btn-icon ">
-				  					  <text class="iconfont text-white">&#xe607</text>
-				  </view>
+				<view class="btn btn-icon"><text class="iconfont text-white " style="font-size: 40rpx;">&#xe633;</text></view>
+				<view class="btn btn-icon bg-main" @click="openGift"><text class="iconfont">&#xe67c;</text></view>
+				<view class="btn btn-icon "><text class="iconfont text-white">&#xe7cd;</text></view>
+				<view class="btn btn-icon "><text class="iconfont text-white">&#xe607;</text></view>
 			</view>
 		</view>
+		<!-- 弹幕弹出层 -->
 		<uni-popup type="bottom" ref="input">
-		      <view class="bg-white flex align-center px-3" style="height: 120rpx;">
-		        <input type="text" v-model="content" class="border rounded flex-1 px-3 font-md"
-		         placeholder="说点什么..."
-		         style="height: 80rpx;"/>
-		         <view class="flex align-center justify-center py-2 px-2 ml-3 rounded"
-		         @click="submit" :class="content === '' ? 'bg-main-disabled':'bg-main'">
-		           <text class="font text-white">发送</text>
-		         </view>
-		      </view>
-		    </uni-popup>
+			<view class="bg-white flex align-center px-3" style="height: 120rpx;">
+				<input type="text" v-model="content" class="border rounded flex-1 px-3 font-md" placeholder="说点什么..." style="height: 80rpx;" />
+				<view class="flex align-center justify-center py-2 px-2 ml-3 rounded" @click="submit" :class="content === '' ? 'bg-main-disabled' : 'bg-main'">
+					<text class="font text-white">发送</text>
+				</view>
+			</view>
+		</uni-popup>
+		<!-- 礼物弹出层 -->
+		<uni-popup type="bottom" ref="giftPoup">
+			<view class="bg-white" style="width: 750rpx; height: 550rpx;">
+				<view class="flex justify-between align-center" style="height: 100rpx;">
+					<text class="text-main font-md ml-3">礼物</text>
+					<view class="flex align-center justify-center" style="width: 100rpx; height: 100rpx;" @click="closeGift"><text class="iconfont">&#xe607;</text></view>
+				</view>
+				<swiper :indicator-dots="true" style="height: 350rpx;" class="border-bottom border-top" :duration="500">
+					<swiper-item>
+						<view class="flex flex-wrap">
+							<view
+								style="width: :187rpx; height: 175rpx;"
+								class="flex flex-column justify-center align-center"
+								v-for="(item, index) in gifts"
+								:key="index"
+								:class="giftActived === item.id ? 'border border-main' : ''"
+								@click="giftActiveId = item.id"
+							>
+								<image :src="item.image" style="width: 100rpx; height: 100rpx;" class="rounded"></image>
+								<view class="flex mt-1">
+									<text class="text-warning font mr-1">{{ item.name }}</text>
+									<text class="text-secondary font">{{ item.coin }}</text>
+								</view>
+							</view>
+						</view>
+					</swiper-item>
+				</swiper>
+				<view class="flex align-center justify-end" style="height: 100rpx;">
+					<view class="flex align-center justify-center py-2 px-2 mr-3 rounded bg-warning"><text class="font">充值</text></view>
+					<view class="flex align-center justify-center py-2 px-2 rounded bg-main" @click="sendGift"><text class="font text-white">发送</text></view>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
-	
 </template>
 
 <script>
 import gift from '../../components/common/gift.vue';
 import Danmu from '../../components/common/danmu.vue';
-import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue'
+import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue';
+import MyGifts from '../../common/gift.js';
 export default {
-	components: { gift,Danmu,uniPopup},
+	components: { gift, Danmu, uniPopup },
 	mounted() {
 		//送礼物颜色
-		setInterval(() => {
-			this.$refs.gift.send({
-				userName: '发送人',
-				avatar: '',
-				gift_name: '蛋糕',
-				gift_image: '/static/gift/3.png',
-				num: 1
-			});
-		}, 3000);
+		// setInterval(() => {
+		// 	this.$refs.gift.send({
+		// 		userName: '发送人',
+		// 		avatar: '',
+		// 		gift_name: '蛋糕',
+		// 		gift_image: '/static/gift/3.png',
+		// 		num: 1
+		// 	});
+		// }, 3000);
 	},
 
 	data() {
 		return {
 			statusBarHeight: 0,
-			content:''
+			content: '',
+			gifts: [],
+			giftActiveId: 0
 		};
 	},
 	onLoad() {
 		let res = uni.getSystemInfoSync();
 		this.statusBarHeight = res.statusBarHeight;
 		console.log(this.statusBarHeight);
+		this.gifts = MyGifts;
 	},
 	methods: {
-//打开输入弹幕的对话框
-openInput(){
-	this.$refs.input.open()
-},
-//提交发送弹幕信息
-  submit(){
-	  if(this.content===''){
-		  return
-	  }
-	  this.$refs.danmu.send({
-		  id:Math.random()*100,
-		  name:'wanglin',
-		  content:this.content
-	  })
-	  this.content=''
-	  this.$refs.input.close()
-  },
-  //返回上一层页面
-  back(){
-	  uni.navigateBack({
-	  	delta:1
-	  });
-  }
+		//打开输入弹幕的对话框
+		openInput() {
+			this.$refs.input.open();
+		},
+		//提交发送弹幕信息
+		submit() {
+			if (this.content === '') {
+				return;
+			}
+			this.$refs.danmu.send({
+				id: Math.random() * 100,
+				name: 'wanglin',
+				content: this.content
+			});
+			this.content = '';
+			this.$refs.input.close();
+		},
+		//返回上一层页面
+		back() {
+			uni.navigateBack({
+				delta: 1
+			});
+		},
+	
+	// 送礼物相关方法
+	openGift() {
+		
+		this.$refs.giftPoup.open();
+	},
+	closeGift() {
+		this.$refs.giftPoup.close();
+	},
+	sendGift() {
+		if (this.giftActiveId === 0) {
+			return uni.showToast({
+				title: '请选择发送礼物',
+				icon: 'none'
+			});
+		}
+		let index = this.gifts.findIndex(item => item.id === this.giftActiveId);
+		if (index === -1) {
+			return;
+		}
+		let g = this.gifts[index];
+		this.$refs.gift.send({
+			userName: '王林',
+			avatar: '',
+			gift_name: g.name,
+			gift_image: g.image,
+			num: 10
+		});
+		this.closeGift();
 	}
+	},
 };
 </script>
 
-<style>.btn{
+<style>
+.btn {
 	height: 80rpx;
 	border-radius: 100rpx;
-	background-color: rgba(255,255,255,0.12);
+	background-color: rgba(255, 255, 255, 0.12);
 	align-items: center;
 	justify-content: center;
 }
-.btn-icon{
+.btn-icon {
 	width: 80rpx;
 	margin-right: 20rpx;
-}</style>
+}
+</style>

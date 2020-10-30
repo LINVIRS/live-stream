@@ -17,6 +17,7 @@
 <script>
 // 操作dom操作
 const dom = weex.requireModule('dom');
+
 export default {
 	data() {
 		return {
