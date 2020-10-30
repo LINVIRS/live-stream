@@ -58,7 +58,7 @@
 					<swiper-item>
 						<view class="flex flex-wrap">
 							<view
-								style="width: :187rpx; height: 175rpx;"
+								style="width: 187rpx; height: 175rpx;"
 								class="flex flex-column justify-center align-center"
 								v-for="(item, index) in gifts"
 								:key="index"
@@ -75,7 +75,7 @@
 					</swiper-item>
 				</swiper>
 				<view class="flex align-center justify-end" style="height: 100rpx;">
-					<view class="flex align-center justify-center py-2 px-2 mr-3 rounded bg-warning"><text class="font">充值</text></view>
+					<view class="flex align-center justify-center py-2 px-2 mr-3 rounded bg-warning" @click="openCoin"><text class="font">充值</text></view>
 					<view class="flex align-center justify-center py-2 px-2 rounded bg-main" @click="sendGift"><text class="font text-white">发送</text></view>
 				</view>
 			</view>
@@ -170,6 +170,11 @@ export default {
 			num: 10
 		});
 		this.closeGift();
+	},
+	openCoin(){
+		uni.navigateTo({
+			url:'../coin/coin'
+		});
 	}
 	},
 };

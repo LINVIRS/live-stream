@@ -3,54 +3,60 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-							// "navigationBarTextStyle": "white", // 导航栏标题颜色及状态栏前景颜色，仅支持 black/white
-							"app-plus": {
-								"titleNView": false
-							}
-						}
+				// "navigationBarTextStyle": "white", // 导航栏标题颜色及状态栏前景颜色，仅支持 black/white
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/my/my",
+			"style": {}
+		}, {
+			"path": "pages/live/live",
+			"style": {
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#000000",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/coin/coin",
+			"style": {
+				"navigationBarTitleText": "我的余额",
+				"navigationBarBackgroundColor":"#FFFFFF",
+				"navigationBarTextStyle":"black"
+			}
+
 		}
-	    ,{
-            "path" : "pages/my/my",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/live/live",
-           "style": {
-           				"navigationBarTextStyle": "white",
-           				        "backgroundColor": "#000000",
-           				        "app-plus": {
-           				          "titleNView": false
-           				        }
-           			}
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "直播",
 		"navigationBarBackgroundColor": "#000000",
 		"backgroundColor": "#000000"
 	},
-	"tabBar":{
-		"color":"#707070",
-		"selectedColor":"#8745FF",
-		"backgroundColor":"#FFFFFF",
-		"borderStyle":"black",
-		"midButton":{
-			"iconPath":"static/tabbar/min.png",
-			"iconWidth":"60px",
-			"height":"65px"
+	"tabBar": {
+		"color": "#707070",
+		"selectedColor": "#8745FF",
+		"backgroundColor": "#FFFFFF",
+		"borderStyle": "black",
+		"midButton": {
+			"iconPath": "static/tabbar/min.png",
+			"iconWidth": "60px",
+			"height": "65px"
 		},
-		    "list":[{
-			"iconPath":"static/tabbar/find.png",
-			"selectedIconPath":"./static/tabbar/find-selected.png",
-			"pagePath":"pages/index/index",
-			"text":"发现"
-		},{
-			"iconPath":"static/tabbar/my.png",
-			"selectedIconPath":"static/tabbar/my-selected.png",
-			"pagePath":"pages/my/my",
-			"text":"我的"
+		"list": [{
+			"iconPath": "static/tabbar/find.png",
+			"selectedIconPath": "./static/tabbar/find-selected.png",
+			"pagePath": "pages/index/index",
+			"text": "发现"
+		}, {
+			"iconPath": "static/tabbar/my.png",
+			"selectedIconPath": "static/tabbar/my-selected.png",
+			"pagePath": "pages/my/my",
+			"text": "我的"
 		}]
 		// 自定义
 		// "list": [{
