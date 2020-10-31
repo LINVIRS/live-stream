@@ -11,6 +11,7 @@ export default {
 		uni.onTabBarMidButtonTap(() => {
 			//页面跳转
 			uni.navigateTo({
+				//出现路径错误 不带‘/’ 找不到路径
 				url: '/pages/create-live/create-live'
 			});
 			console.log('点击了中间按钮');
