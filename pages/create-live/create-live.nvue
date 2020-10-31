@@ -31,7 +31,7 @@
 				</view>
 			</view>
 			<view class="position-absolute right-0 flex flex-column" style="width: 100rpx;">
-				<view style="height: 120rpx; width: 100rpx;" class="flex flex-column align-center justify-center">
+				<view style="height: 120rpx; width: 100rpx;" class="flex flex-column align-center justify-center" @click="switchCamera">
 					<text class="iconfont text-white mb-1">&#xe605;</text>
 					<text class="text-white font">翻转</text>
 				</view>
@@ -101,7 +101,16 @@ export default {
 		// 直播出错
 		error(e) {
 			console.log(e);
-		}
+		},
+		//镜头翻转
+		switchCamera(){
+			this.context.switchCamera({
+				success:(e)=>{
+					this.position=this.position==='back'?'front':'back'
+				}
+			})
+			
+		},
 	}
 };
 </script>
