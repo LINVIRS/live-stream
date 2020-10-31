@@ -39,11 +39,11 @@
 					<text class="iconfont text-white mb-1">&#xe60c;</text>
 					<text class="text-white font">画质</text>
 				</view>
-				<view style="height: 120rpx; width: 100rpx;" class="flex flex-column align-center justify-center">
+				<view style="height: 120rpx; width: 100rpx;" class="flex flex-column align-center justify-center" @click="openPopup('beauty')">
 					<text class="iconfont text-white mb-1">&#xe632;</text>
 					<text class="text-white font">美颜</text>
 				</view>
-				<view style="height: 120rpx; width: 100rpx;" class="flex flex-column align-center justify-center">
+				<view style="height: 120rpx; width: 100rpx;" class="flex flex-column align-center justify-center" @click="openPopup('whiteness')">
 					<text class="iconfont text-white mb-1">&#xe631;</text>
 					<text class="text-white font">美白</text>
 				</view>
@@ -71,7 +71,30 @@
 						<text class="font-md" :class="mode === item.type ? 'text-white' : ''">{{ item.desc }}</text>
 					</view>
 				</view>
-
+<!-- 美颜 -->
+				<view v-else-if="popupType === 'beauty'">
+					<slider
+						:min="0"
+						:max="9"
+						:step="1"
+						:value="beauty"
+						:block-size="18"
+						show-value
+						@change="handleSliderChange"
+					/>
+				</view>
+				<!-- 美白 -->
+				<view v-else>
+					<slider
+						:min="0"
+						:max="9"
+						:step="1"
+						:value="whiteness"
+						:block-size="18"
+						show-value
+						@change="handleSliderChange"
+					/>
+				</view>
 				<view class="f-divider"></view>
 				<view class="flex align-center justify-center" style="height: 90rpx;" hover-class="bg-light"><text class="font-md">取消</text></view>
 			</view>
@@ -175,6 +198,10 @@ export default {
 					this.popupType = type;
 					this.$refs.popup.open();
 				},
+				//美白美颜	
+				handleSliderChange(e) {
+							this[this.popupType] = e.detail.value;
+						},
 				}
 };
 </script>
