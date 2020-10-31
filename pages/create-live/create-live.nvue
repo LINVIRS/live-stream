@@ -1,0 +1,73 @@
+<template>
+	<view>
+		<live-pusher
+			id="livePusher"
+			ref="livePusher"
+			class="livePusher"
+			:url="url"
+			:mode="mode"
+			:enable-camera="enableCamera"
+			:auto-focus="true"
+			:device-position="position"
+			:beauty="beauty"
+			:whitness="whitness"
+			aspect="9:16"
+			@statechange="statechange"
+			@netstatus="netstatus"
+			@error="error"
+			:style="'height:' + windowHeight + 'px'"
+			style="width: 750rpx; "
+		></live-pusher>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			url: '', // 直播服务器地址，暂时为空
+			mode: 'SD', // 标清模式
+			enableCamera: true, // 是否启用摄像头
+			position: 'back', // 默认摄像头
+			beauty: 0, // 美颜程度
+			whitness: 0, //美白度
+			windowHeight: 0, // 窗体高度
+			context: null //上下文
+		};
+	},
+	// 监听页面加载，其参数为上个页面传递的数据，参数类型为Object（用于页面传参）
+	onLoad() {
+		let res = uni.getSystemInfoSync();
+		this.windowHeight = res.windowHeight;
+	},
+	// 监听页面初次渲染完成，如果渲染速度快，会在页面进入动画完成前触发
+	onReady() {
+		this.context = uni.createLivePusherContext('livePusher', this);
+		this.startPreview();
+	},
+	methods: {
+		// 开启预览模式
+		startPreview() {
+			this.context.startPreview({
+				success: e => {
+					console.log(e);
+				}
+			});
+		},
+		// 直播状态的变化
+		statechange(e) {
+			console.log(e);
+		},
+		// 直播网络的变化
+		netstatus(e) {
+			console.log(e);
+		},
+		// 直播出错
+		error(e) {
+			console.log(e);
+		}
+	}
+};
+</script>
+
+<style></style>

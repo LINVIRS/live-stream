@@ -25,12 +25,22 @@
 			"path": "pages/coin/coin",
 			"style": {
 				"navigationBarTitleText": "我的余额",
-				"navigationBarBackgroundColor":"#FFFFFF",
-				"navigationBarTextStyle":"black"
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black"
 			}
 
-		}
-	],
+		}, 
+	    {
+            "path" : "pages/create-live/create-live",
+            "style" :                                                                                    
+            {
+               "app-plus": {
+               	"titleNView": false
+               }
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "直播",
