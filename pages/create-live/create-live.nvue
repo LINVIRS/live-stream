@@ -49,7 +49,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="position-fixed bg-main flex align-center justify-center rounded-circle " style="left: 100rpx; right: 100rpx; bottom: 100rpx; height: 120rpx;">
+		<view @click="start()" class="position-fixed bg-main flex align-center justify-center rounded-circle " style="left: 100rpx; right: 100rpx; bottom: 100rpx; height: 120rpx;">
 			<text class="text-white font-md">开始视频直播</text>
 		</view>
 
@@ -71,41 +71,21 @@
 						<text class="font-md" :class="mode === item.type ? 'text-white' : ''">{{ item.desc }}</text>
 					</view>
 				</view>
-<!-- 美颜 -->
-				<view v-else-if="popupType === 'beauty'">
-					<slider
-						:min="0"
-						:max="9"
-						:step="1"
-						:value="beauty"
-						:block-size="18"
-						show-value
-						@change="handleSliderChange"
-					/>
-				</view>
+				<!-- 美颜 -->
+				<view v-else-if="popupType === 'beauty'"><slider :min="0" :max="9" :step="1" :value="beauty" :block-size="18" show-value @change="handleSliderChange" /></view>
 				<!-- 美白 -->
-				<view v-else>
-					<slider
-						:min="0"
-						:max="9"
-						:step="1"
-						:value="whiteness"
-						:block-size="18"
-						show-value
-						@change="handleSliderChange"
-					/>
-				</view>
+				<view v-else><slider :min="0" :max="9" :step="1" :value="whiteness" :block-size="18" show-value @change="handleSliderChange" /></view>
 				<view class="f-divider"></view>
-				<view class="flex align-center justify-center" style="height: 90rpx;" hover-class="bg-light"><text class="font-md">取消</text></view>
+				<view class="flex align-center justify-center" style="height: 90rpx;" hover-class="bg-light" @click="close()"><text class="font-md">取消</text></view>
 			</view>
 		</uni-popup>
 	</view>
 </template>
 
 <script>
-	import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue'
+import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue';
 export default {
-	components:{uniPopup},
+	components: { uniPopup },
 	data() {
 		return {
 			url: '', // 直播服务器地址，暂时为空
@@ -116,29 +96,29 @@ export default {
 			whitness: 0, //美白度
 			windowHeight: 0, // 窗体高度
 			context: null, //上下文
-			statusBarHeight:0 ,//状态栏高度
-						modeList: [
-							{
-								type: 'SD',
-								desc: '标清'
-							},
-							{
-								type: 'HD',
-								desc: '高清'
-							},
-							{
-								type: 'FHD',
-								desc: '超清'
-							}
-						],
-						popupType: 'mode'
+			statusBarHeight: 0, //状态栏高度
+			modeList: [
+				{
+					type: 'SD',
+					desc: '标清'
+				},
+				{
+					type: 'HD',
+					desc: '高清'
+				},
+				{
+					type: 'FHD',
+					desc: '超清'
+				}
+			],
+			popupType: 'mode'
 		};
 	},
 	// 监听页面加载，其参数为上个页面传递的数据，参数类型为Object（用于页面传参）
 	onLoad() {
 		let res = uni.getSystemInfoSync();
 		this.windowHeight = res.windowHeight;
-		this.statusBarHeight=res.statusBarHeight; //将状态栏高度传出去
+		this.statusBarHeight = res.statusBarHeight; //将状态栏高度传出去
 	},
 	// 监听页面初次渲染完成，如果渲染速度快，会在页面进入动画完成前触发
 	onReady() {
@@ -146,16 +126,24 @@ export default {
 		this.startPreview();
 	},
 	computed: {
-			popupTitle() {
-				let o = {
-					mode: '画质',
-					beauty: '美颜',
-					whiteness: '美白'
-				};
-				return o[this.popupType];
-			}
-		},
+		popupTitle() {
+			let o = {
+				mode: '画质',
+				beauty: '美颜',
+				whiteness: '美白'
+			};
+			return o[this.popupType];
+		}
+	},
 	methods: {
+		start() {
+			uni.navigateTo({
+				url: '../live-room/live-room'
+			});
+		},
+		close() {
+			this.$refs.popup.close();
+		},
 		// 开启预览模式
 		startPreview() {
 			this.context.startPreview({
@@ -177,32 +165,31 @@ export default {
 			console.log(e);
 		},
 		//镜头翻转
-		switchCamera(){
+		switchCamera() {
 			this.context.switchCamera({
-				success:(e)=>{
-					this.position=this.position==='back'?'front':'back'
+				success: e => {
+					this.position = this.position === 'back' ? 'front' : 'back';
 				}
-			})
-
+			});
 		},
 		// 画质选择
-				chooseMode(item) {
-					this.mode = item.type;
-					uni.showToast({
-						title: '画质切换为' + item.desc,
-						icon: 'none'
-					});
-					this.$refs.popup.close();
-				},
-				openPopup(type) {
-					this.popupType = type;
-					this.$refs.popup.open();
-				},
-				//美白美颜	
-				handleSliderChange(e) {
-							this[this.popupType] = e.detail.value;
-						},
-				}
+		chooseMode(item) {
+			this.mode = item.type;
+			uni.showToast({
+				title: '画质切换为' + item.desc,
+				icon: 'none'
+			});
+			this.$refs.popup.close();
+		},
+		openPopup(type) {
+			this.popupType = type;
+			this.$refs.popup.open();
+		},
+		//美白美颜
+		handleSliderChange(e) {
+			this[this.popupType] = e.detail.value;
+		}
+	}
 };
 </script>
 

@@ -1,0 +1,310 @@
+<template>
+	<view class="flex-1">
+		<live-pusher
+			id="livePusher"
+			ref="livePusher"
+			class="livePusher"
+			:url="url"
+			:mode="mode"
+			:enable-camera="enableCamera"
+			:auto-focus="true"
+			:device-position="device - position"
+			:beauty="beauty"
+			:whiteness="whiteness"
+			aspect="9:16"
+			@statecchange="statechange"
+			@netstatus="netstatus"
+			@error="rooro"
+			:style="'height:' + windowHeight + 'px;'"
+			style="width: 750rpx;"
+		></live-pusher>
+		<!-- 头部 -->
+		<view style="position: fixed; left: 0; right: 0;" :style="'top:' + statusBarHeight + 'px'">
+			<!-- 个人信息 | 观看详情信息 -->
+			<view class="px-2 flex justify-between align-center" style="height: 80rpx;">
+				<view style="width: 325rpx; background-color: rgba(0, 0, 0, 0.4);" class="flex rounded-circle">
+					<view class="p"><image src="/static/62.jpg" style="width: 70rpx; height: 70rpx;" class="rounded-circle"></image></view>
+					<view class="flex-1 flex justify-center flex-column">
+						<text class="text-white font">小可爱</text>
+						<text class="text-white font-sm">888</text>
+					</view>
+					<view class="p">
+						<view class="rounded-circle flex-center bg-main" style="width: 70rpx; height: 70rpx;"><text class="text-white">+</text></view>
+					</view>
+				</view>
+				<view style="width: 325rpx; background-color: rgba(0, 0, 0, 0.4);" class="flex rounded-circle">
+					<scroll-view scroll-x="true" class="flex-1 flex">
+						<view class="p" v-for="i in 20" :key="i"><image src="../../static/gift/8.png" style="width: 70rpx; height: 70rpx;" class="rounded-circle"></image></view>
+					</scroll-view>
+					<view class="p">
+						<view class="rounded-circle flex-center bg-main" style="width: 70rpx; height: 70rpx;"><text class="text-white font-sm">1000</text></view>
+					</view>
+				</view>
+			</view>
+			<!-- 金币 -->
+			<view class="px-2 my-2" style="height: 80rpx;">
+				<view class="flex rounded-circle align-center" style="width: 325rpx; background-color: rgba(0, 0, 0, 0.4);">
+					<view class="p"><text class="text-warning">金币</text></view>
+					<view class="flex-1 flex flex-column justify-center"><text class="text-white font">100</text></view>
+				</view>
+			</view>
+			<!-- 收到礼物 -->
+			<f-gift ref="gift"></f-gift>
+		</view>
+		<!-- 弹幕 -->
+		<f-danmu ref="danmu"></f-danmu>
+
+		<!-- 底部 -->
+		<view class="flex align-center justify-between" style="position: fixed; left: 0; bottom: 0; right: 0; height: 120rpx;">
+			<view class="flex-1 flex-center flex-column" v-for="(item, index) in btns" :key="index" @click="handleBottomEvent(item)">
+				<text class="iconfont text-white mb-1">{{ item.icon }}</text>
+				<text class="text-white font">{{ item.name }}</text>
+			</view>
+		</view>
+
+		<uni-popup type="bottom" ref="popup">
+			<view class="bg-white">
+				<view class="flex-center border-bottom" style="height: 90rpx;">
+					<text class="font-md">{{ popupTitle }}</text>
+				</view>
+				<!-- 画质选择 -->
+				<view v-if="popupType === 'mode'">
+					<view class="flex-center py-2" v-for="(item, index) in modeList" :key="index" :class="mode === item.type ? 'bg-main' : ''" @click="chooseMode(item)">
+						<text class="font-md" :class="mode === item.type ? 'text-white' : ''">{{ item.desc }}</text>
+					</view>
+				</view>
+				<!-- 美颜 -->
+				<view v-else-if="popupType === 'beauty'"><slider :min="0" :max="9" :step="1" :value="beauty" :block-size="18" show-value @change="handleSliderChange" /></view>
+				<!-- 美白 -->
+				<view v-else-if="popupType === 'whiteness'">
+					<slider :min="0" :max="9" :step="1" :value="whiteness" :block-size="18" show-value @change="handleSliderChange" />
+				</view>
+				<!-- 更多 -->
+				<view class="flex flex-wrap">
+					<view class="flex-center flex-column" style="width: 150rpx; height: 150rpx;">
+						<text class="iconfont mb-1">&#xe611;</text>
+						<text class="font">暂停</text>
+					</view>
+					<view class="flex-center flex-column" style="width: 150rpx; height: 150rpx;">
+						<text class="iconfont mb-1">&#xe64d;</text>
+						<text class="font">退出</text>
+					</view>
+				</view>
+				<view class="f-divider"></view>
+				<view class="flex-center" style="height: 90rpx;" hover-class="bg-light" @click="closePopup"><text class="font-md">取消</text></view>
+			</view>
+		</uni-popup>
+	</view>
+</template>
+
+<script>
+import fGift from '../../components/live/f-gift.vue';
+import fDanmu from '../../components/live/f-danmu.vue';
+import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue';
+import myGifts from '../../common/gifts.js';
+export default {
+	components: {
+		fGift,
+		fDanmu,
+		uniPopup
+	},
+	data() {
+		return {
+			statusBarHeight: 0,
+			content: '',
+			gifts: [],
+			giftActiveId: 0,
+			// 直播服务器地址，暂空
+			url: '',
+			// 标清模式
+			mode: 'SD',
+			// 是否启用摄像头
+			enableCamera: true,
+			// 默认摄像头
+			position: 'back',
+			// 美颜度
+			beauty: 0,
+			// 美白度
+			whiteness: 0,
+			// 窗体高度
+			windowHeight: 0,
+			// 上下文
+			context: null,
+			modeList: [
+				{
+					type: 'SD',
+					desc: '标清'
+				},
+				{
+					type: 'HD',
+					desc: '高清'
+				},
+				{
+					type: 'FHD',
+					desc: '超清'
+				}
+			],
+			popupType: 'mode',
+			btns: [
+				{
+					name: '翻转',
+					icon: '\ue605',
+					event: 'switchCamera'
+				},
+				{
+					name: '画质',
+					icon: '\ue60c',
+					event: 'openPopup',
+					params: 'mode'
+				},
+				{
+					name: '美颜',
+					icon: '\ue632',
+					event: 'openPopup',
+					params: 'beauty'
+				},
+				{
+					name: '美白',
+					icon: '\ue631',
+					event: 'openPopup',
+					params: 'whiteness'
+				},
+				{
+					name: '更多',
+					icon: '\ue84b',
+					event: 'openPopup',
+					params: 'more'
+				}
+			]
+		};
+	},
+	methods: {
+		handleBottomEvent(item) {
+			this[item.event](item.params);
+		},
+		back() {
+			uni.showModal({
+				content: '是否要结束当前直播?',
+				success: res => {
+					if (res.confirm) {
+						uni.navigateBack({
+							delta: 1
+						});
+					}
+				}
+			});
+		},
+		/**
+		 * 画质选择
+		 * @param {Object} item
+		 */
+		chooseMode(item) {
+			this.mode = item.type;
+			uni.showToast({
+				title: '画质切换为' + item.desc,
+				icon: 'none'
+			});
+			this.$refs.popup.close();
+		},
+		/**
+		 * 打开弹出框
+		 * @param {Object} type
+		 */
+		openPopup(type) {
+			this.popupType = type;
+			this.$refs.popup.open();
+		},
+		closePopup() {
+			this.$refs.popup.close();
+		},
+		/**
+		 * 切换镜头
+		 */
+		switchCamera() {
+			this.context.switchCamera({
+				success: e => {
+					this.position = this.position === 'back' ? 'front' : 'back';
+				}
+			});
+		},
+		/**
+		 * 开启预览
+		 */
+		startPreview() {
+			this.context.startPreview({
+				success: e => {
+					console.log(e);
+				}
+			});
+		},
+
+		/**
+		 * 直播状态的变化
+		 * @param {Object} e
+		 */
+		statechange(e) {
+			console.log(e);
+		},
+
+		/**
+		 * 直播网络的变化
+		 * @param {Object} e
+		 */
+		netstatus(e) {
+			console.log(e);
+		},
+
+		/**
+		 * 直播出错
+		 */
+		error() {
+			console.log(e);
+		},
+		handleSliderChange(e) {
+			this[this.popupType] = e.detail.value;
+		}
+	},
+	onLoad(e) {
+		let res = uni.getSystemInfoSync();
+		this.statusBarHeight = res.statusBarHeight;
+		this.windowHeight = res.windowHeight;
+
+		let options = JSON.parse(e.options);
+		this.mode = option.mode;
+		this.position = options.position;
+		this.beauty = options.beauty;
+		this.whiteness = options.whiteness;
+		// 演示
+		this.gifts = myGifts;
+	},
+	onReady() {
+		this.context = uni.createLivePusherContext('livePusher', this);
+		this.startPreview();
+	},
+	mounted() {},
+	computed: {
+		popupTitle() {
+			let o = {
+				mode: '画质',
+				beauty: '美颜',
+				whiteness: '美白'
+			};
+			return o[this.popupType];
+		}
+	}
+};
+</script>
+
+<style scoped>
+.btn {
+	height: 80rpx;
+	border-radius: 100rpx;
+	background-color: rgba(255, 255, 255, 0.12);
+	align-items: center;
+	justify-content: center;
+}
+.btn-icon {
+	width: 80rpx;
+	margin-right: 20rpx;
+}
+</style>

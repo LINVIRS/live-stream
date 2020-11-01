@@ -141,42 +141,41 @@ export default {
 				delta: 1
 			});
 		},
-	
-	// 送礼物相关方法
-	openGift() {
-		
-		this.$refs.giftPoup.open();
-	},
-	closeGift() {
-		this.$refs.giftPoup.close();
-	},
-	sendGift() {
-		if (this.giftActiveId === 0) {
-			return uni.showToast({
-				title: '请选择发送礼物',
-				icon: 'none'
+
+		// 送礼物相关方法
+		openGift() {
+			this.$refs.giftPoup.open();
+		},
+		closeGift() {
+			this.$refs.giftPoup.close();
+		},
+		sendGift() {
+			if (this.giftActiveId === 0) {
+				return uni.showToast({
+					title: '请选择发送礼物',
+					icon: 'none'
+				});
+			}
+			let index = this.gifts.findIndex(item => item.id === this.giftActiveId);
+			if (index === -1) {
+				return;
+			}
+			let g = this.gifts[index];
+			this.$refs.gift.send({
+				userName: '王林',
+				avatar: '',
+				gift_name: g.name,
+				gift_image: g.image,
+				num: 10
+			});
+			this.closeGift();
+		},
+		openCoin() {
+			uni.navigateTo({
+				url: '../coin/coin'
 			});
 		}
-		let index = this.gifts.findIndex(item => item.id === this.giftActiveId);
-		if (index === -1) {
-			return;
-		}
-		let g = this.gifts[index];
-		this.$refs.gift.send({
-			userName: '王林',
-			avatar: '',
-			gift_name: g.name,
-			gift_image: g.image,
-			num: 10
-		});
-		this.closeGift();
-	},
-	openCoin(){
-		uni.navigateTo({
-			url:'../coin/coin'
-		});
 	}
-	},
 };
 </script>
 
