@@ -22,7 +22,7 @@
 			<view class="flex align-center justify-center" style="width: 90rpx;height: 90rpx;"><text class="iconfont text-white">&#xe607;</text></view>
 			<view class="position-absolute rounded p-2 flex align-center" style="left: 90rpx; right: 100rpx; height: 160rpx;background-color: (0,0,0,0.2);">
 				<view style="height: 120rpx; width: 120rpx;" class="position-relative rounded">
-					<image src="../../static/banner/1.jpg" style="height: 120rpx; width: 120rpx;" class="rounded-circle"></image>
+					<image src="../../static/1.jpg" style="height: 120rpx; width: 120rpx;" class="rounded-circle"></image>
 					<text class="text-white position-absolute font" style="left: 0;right: 0; bottom: 0;">更换封面</text>
 				</view>
 				<view class="flex-1 ml-2">

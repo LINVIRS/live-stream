@@ -98,10 +98,10 @@
 </template>
 
 <script>
-import fGift from '../../components/live/f-gift.vue';
-import fDanmu from '../../components/live/f-danmu.vue';
+import fGift from '../../components/common/gift.vue';
+import fDanmu from '../../components/common/danmu.vue';
 import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue';
-import myGifts from '../../common/gifts.js';
+import myGifts from '../../common/gift.js';
 export default {
 	components: {
 		fGift,
