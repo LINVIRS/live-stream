@@ -16,6 +16,7 @@ export default {
 			});
 			console.log('点击了中间按钮');
 		});
+		this.$store.dispatch('initUser');
 	},
 	onShow: function() {
 		console.log('App Show');
