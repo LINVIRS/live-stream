@@ -75,9 +75,9 @@ export default {
         }
       });
   },
-    openLive() {
+    openLive(e) {
       uni.navigateTo({
-        url: '../live/live'
+        url: '../live/live?id='+e
       });
     },
   }

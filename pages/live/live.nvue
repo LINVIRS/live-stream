@@ -20,7 +20,7 @@
 		<view style="height: 300rpx;"><gift ref="gift" style="position: absolute;"></gift></view>
 
 		<view style="height: 400rpx;" :style="'margin-top:' + statusBarHeight + 'px'">
-			<video src="http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8" autoplay controls="true" class="flex-1"></video>
+			<video :src="'https://wlcon.utools.club/live/' + detail.key + '.flv?sign=' + sign" autoplay controls="false" style="width: 100%;"></video>
 		</view>
 
 		<!-- 弹幕 -->
@@ -88,34 +88,33 @@ import gift from '../../components/common/gift.vue';
 import Danmu from '../../components/common/danmu.vue';
 import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue';
 import MyGifts from '../../common/gift.js';
+import $H from '../../common/request.js'
 export default {
 	components: { gift, Danmu, uniPopup },
-	mounted() {
-		//送礼物颜色
-		// setInterval(() => {
-		// 	this.$refs.gift.send({
-		// 		userName: '发送人',
-		// 		avatar: '',
-		// 		gift_name: '蛋糕',
-		// 		gift_image: '/static/gift/3.png',
-		// 		num: 1
-		// 	});
-		// }, 3000);
-	},
+
 
 	data() {
 		return {
 			statusBarHeight: 0,
 			content: '',
 			gifts: [],
-			giftActiveId: 0
+			giftActiveId: 0,
+			live:'',
+			detail:'',
+			sign:','
 		};
 	},
-	onLoad() {
+	onLoad(option) {
+	
 		let res = uni.getSystemInfoSync();
 		this.statusBarHeight = res.statusBarHeight;
-		console.log(this.statusBarHeight);
 		this.gifts = MyGifts;
+		
+		$H.get('/api/live/read/'+option.id).then(res=>{
+			console.log(res)
+			this.detail=res.data;
+			this.sign=res.sign
+		})
 	},
 	methods: {
 		//打开输入弹幕的对话框

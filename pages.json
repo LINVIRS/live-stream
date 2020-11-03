@@ -13,13 +13,16 @@
 	    "path" : "pages/login/login",
 	    "style" :                                                                                    
 	    {
-	        "navigationBarTitleText": "",
-	        "enablePullDownRefresh": false
+	       "app-plus": {
+	       	"titleNView": false
+	       }
 	    }
 	   },
 		{
 			"path": "pages/my/my",
-			"style": {}
+			"style": {"app-plus": {
+					"titleNView": false
+				}}
 		}, {
 			"path": "pages/live/live",
 			"style": {
