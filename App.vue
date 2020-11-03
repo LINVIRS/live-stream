@@ -10,7 +10,7 @@ export default {
 		// 监听底部导航中间凸起按钮
 		uni.onTabBarMidButtonTap(() => {
 			//页面跳转
-			uni.navigateTo({
+			this.authJump({
 				//出现路径错误 不带‘/’ 找不到路径
 				url: '/pages/create-live/create-live'
 			});

@@ -97,7 +97,7 @@ export default {
     },
     settings(){
     this.authJump({
-      url: '../user-set/user-set'
+      url: '/pages/user-set/user-set'
     }); 
     },
   }

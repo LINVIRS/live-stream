@@ -120,7 +120,9 @@ export default {
 	methods: {
 		//打开输入弹幕的对话框
 		openInput() {
-			this.$refs.input.open();
+			this.$store.dispatch('authMethod',()=>{
+				this.$refs.input.open();
+			})
 		},
 		//提交发送弹幕信息
 		submit() {
