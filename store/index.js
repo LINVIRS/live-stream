@@ -15,7 +15,7 @@ export default new Vuex.Store({
 					icon:'none'
 				});
 				return uni.navigateTo({
-					url:'/pages/login.login'
+					url:'/pages/login/login'
 				});
 			}
 			callback()

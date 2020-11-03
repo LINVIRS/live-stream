@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="flex ">
+		<view class="flex " style="margin-top: 80rpx;">
 			<view class="ml-4"><image src="../../static/gift/2.png" style="width: 70rpx;height: 70rpx;" class="rounded-circle"></image></view>
 			<text style="width: 105rpx; font-size: 32rpx; color: white;">主播100</text>
 			<view style="width: 171rpx;"></view>
@@ -122,7 +122,7 @@ export default {
 		openInput() {
 			this.$store.dispatch('authMethod',()=>{
 				this.$refs.input.open();
-			})
+			});
 		},
 		//提交发送弹幕信息
 		submit() {
