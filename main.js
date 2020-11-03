@@ -14,18 +14,18 @@ Vue.config.productionTip = false
 
 App.mpType = 'app'
 
-Vue.prototype.authMethod = (callback) => {
-	if (!store.state.token) {
-		uni.showToast({
-			title: '请先登录',
-			icon: 'none'
-		});
-		return uni.navigateTo({
-			url: '/pages/login/login',
-		});
-	}
-
-	callback()
+// 权限验证
+Vue.prototype.authJump = (options) => {
+  if (!store.state.token) {
+    uni.showToast({
+      title: '请先登录',
+      icon: 'none'
+    });
+    return uni.navigateTo({
+      url: '/pages/login/login.vue'
+    })
+  }
+  uni.navigateTo(options);
 }
 const app = new Vue({
 	store,

@@ -31,7 +31,7 @@ export default new Vuex.Store({
 		logout({
 			state
 		}) {
-			$H.post('/logout', {}, {
+			$H.post('/api/logout', {}, {
 				token: true,
 				toast: false
 			})
@@ -43,7 +43,7 @@ export default new Vuex.Store({
 		getUserInfo({
 			state
 		}) {
-			$H.get('/user/info', {
+			$H.get('/api/user/info', {
 				token: true,
 				noJump: true,
 				toast: false

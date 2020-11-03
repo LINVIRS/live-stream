@@ -1,6 +1,6 @@
 {
     "name" : "live-stream",
-    "appid" : "__UNI__FCE8018",
+    "appid" : "__UNI__001D781",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -16,10 +16,7 @@
             "autoclose" : true,
             "delay" : 0
         },
-		"statusbar": {
-		"immersed": "none",
-		"style": "dark"
-		},
+     
         /* 模块配置 */
         "modules" : {},
         /* 应用发布信息 */
@@ -54,7 +51,51 @@
             /* ios打包配置 */
             "ios" : {},
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "oauth" : {},
+                "ad" : {}
+            }
+        },
+        "nativePlugins" : {
+            "JG-JVerification" : {
+                "JPUSH_CHANNEL_IOS" : "",
+                "JPUSH_APPKEY_ANDROID" : "8c3f943ae94d8bd54efc6c2f",
+                "JPUSH_APPKEY_IOS" : "",
+                "JPUSH_CHANNEL_ANDROID" : "123",
+                "__plugin_info__" : {
+                    "name" : "JG-JVerification",
+                    "description" : "极光认证Hbuilder插件",
+                    "platforms" : "Android,iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {
+                        "JPUSH_CHANNEL_IOS" : {
+                            "des" : "[iOS]用于统计分发渠道，不需要可填默认值 developer-default",
+                            "key" : "JVerification:CHANNEL",
+                            "value" : ""
+                        },
+                        "JPUSH_APPKEY_ANDROID" : {
+                            "des" : "[Android]极光 portal 配置应用信息时分配的 AppKey",
+                            "key" : "JPUSH_APPKEY",
+                            "value" : ""
+                        },
+                        "JPUSH_APPKEY_IOS" : {
+                            "des" : "[iOS]极光 portal 配置应用信息时分配的 AppKey",
+                            "key" : "JVerification:APP_KEY",
+                            "value" : ""
+                        },
+                        "JPUSH_CHANNEL_ANDROID" : {
+                            "des" : "[Android]用于统计分发渠道，不需要可填默认值 developer-default",
+                            "key" : "JPUSH_CHANNEL",
+                            "value" : ""
+                        }
+                    }
+                }
+            }
         }
     },
     /* 快应用特有相关 */
@@ -76,7 +117,7 @@
     "mp-toutiao" : {
         "usingComponents" : true
     },
-    "uniStatistics": {  
-        "enable": false
+    "uniStatistics" : {
+        "enable" : false
     }
 }

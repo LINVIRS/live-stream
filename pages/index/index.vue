@@ -1,147 +1,104 @@
 <template>
-	
-		
-	<view>
-		<!-- 轮播图 -->
-		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="200">
-			<swiper-item>
-			<image src="../../static/1.jpg" style="width: 750rpx; height: 280rpx;"></image>
-			</swiper-item>
-			<swiper-item>
-					<image src="../../static/2.jpg" style="width: 750rpx; height: 280rpx;"></image>
-			</swiper-item>
-		</swiper>
-		<view class=" flex-2 flex-wrap flex">
-			
-			<list v-for="(item, index) in list" :key="index" :item="item" :index="index" @openLive="openLive" >
-				
-			</list></view>
-	</view>
-	
+  <view>
+    <view class="top flex align-center justify-center">
+      <input type="text" 
+    style="width: 600rpx;height: 70rpx;background-color: rgba(0,0,0,0.2);margin-top:80rpx;"
+    class="rounded-circle mx-1 pl-5" 
+    placeholder="搜索直播间" />
+    </view>
+  
+  <view class="flex flex-wrap">
+    <view class="list-item" v-for="(item, index) in list" :key="index">
+      <f-card :item="item" :index="index" @click="openLive(item.id)"></f-card>
+    </view>
+  </view>
+  
+  <view class="f-divider"></view>
+  <view class="flex align-center justify-center py-3">
+    <text class="font-md text-secondary">{{ loadText }}</text>
+  </view>
+    
+  </view>
 </template>
 
 <script>
-import tab from '../../components/common/tab.vue';
-import list from '../../components/common/list.vue';
+import fCard from '../../components/common/f-card.vue';
 export default {
-	components: {
-		tab,
-		list
-	},
-	data() {
-		return {
-			title: 'Hello',
-			list: [
-				{
-					id: 1,
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2247156841,1768518733&fm=11&gp=0.jpg',
-					money: 0,
-					colorIndex: 0,
-					moods: 10,
-					title: '标题1',
-					status: '直播中'
-				},
-				{
-					id: 2,
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2247156841,1768518733&fm=11&gp=0.jpg',
-					money: 0,
-					colorIndex: 0,
-					moods: 10,
-					title: '标题2',
-					status: '直播中'
-				},
-				{
-					id: 3,
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2247156841,1768518733&fm=11&gp=0.jpg',
-					colorIndex: 1,
-					money: 0,
-					moods: 10,
-					title: '标题3',
-					status: '已结束'
-				},
-				{
-					id: 4,
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2247156841,1768518733&fm=11&gp=0.jpg',
-					colorIndex: 1,
-					money: 0,
-					moods: 10,
-					title: '标题4',
-					status: '直播中'
-				},
-				{
-					id: 5,
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2247156841,1768518733&fm=11&gp=0.jpg',
-					money: 0,
-					colorIndex: 0,
-					moods: 10,
-					title: '标题5',
-					status: '已结束'
-				},
-				{
-					id: 6,
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2247156841,1768518733&fm=11&gp=0.jpg',
-					money: 0,
-					colorIndex: 0,
-					moods: 10,
-					title: '标题6',
-					status: '已结束'
-				},
-				{
-					id: 7,
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2247156841,1768518733&fm=11&gp=0.jpg',
-					money: 0,
-					colorIndex: 0,
-					moods: 10,
-					title: '标题7',
-					status: '直播中'
-				},
-				{
-					id: 8,
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2247156841,1768518733&fm=11&gp=0.jpg',
-					money: 0,
-					colorIndex: 0,
-					moods: 10,
-					title: '标题8',
-					status: '已结束'
-				},
-				{
-					id: 9,
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2247156841,1768518733&fm=11&gp=0.jpg',
-					money: 0,
-					colorIndex: 0,
-					moods: 10,
-					title: '标题9',
-					status: '直播中'
-				},
-				{
-					id: 10,
-					image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2247156841,1768518733&fm=11&gp=0.jpg',
-
-					colorIndex: 0,
-					moods: 10,
-					title: '标题10',
-					status: '已结束'
-				}
-			]
-		};
-	},
-	onLoad() {
-		// uni.hideTabBar();
-	},
-	methods: {
-		openLive(e){
-		
-			uni.navigateTo({
-				url:'../live/live'
-			})
-		}
-	}
+  components: {
+    fCard
+  },
+  data() {
+    return {
+      list: [],
+    page:1,
+    loadText:'上拉加载更多'
+    };
+  },
+  onLoad() {
+    this.getData();
+  },
+  onPullDownRefresh(){
+  this.page = 1;
+  this.getData()
+  .then(res => {
+    uni.showToast({
+      title:'刷新成功',
+      icon:'none'
+    });
+    uni.stopPullDownRefresh();
+  })
+  .catch(err => {
+    uni.stopPullDownRefresh();
+  });
+  },
+  onReachBottom() {
+    if(this.loadText !== '上拉加载更多'){
+    return;
+  }
+  this.loadText = '加载中...';
+  this.page++;
+  this.getData();
+  },
+  methods: {
+  getData(){
+    let page = this.page;
+    return this.$H
+      .get('/api/live/list/' + page)
+      .then(res =>{
+        (this.list = page === 1 ? res:[...this.list,...res]),
+        (this.loadText = res.length<10?'没有更多了':'上拉加载更多');
+      })
+      .catch(err => {
+        if(this.page >1){
+          this.page--;
+          this.loadText = '上拉加载更多';
+        }
+      });
+  },
+    openLive() {
+      uni.navigateTo({
+        url: '../live/live'
+      });
+    },
+  }
 };
 </script>
 
 <style>
-.content {
-	width: 100%;
-	height: 100%;
+.top {
+  width: 750rpx;
+  height: 260rpx;
+  background-image: url(../../static/2.jpg);
+  background-size: cover;
+  background-image: linear-gradient(to right,#ba7ace 0%,#8745ff 100%);
 }
+
+.list-item {
+  width: 375rpx;
+  height: 375rpx;
+  padding: 5rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+
 </style>
