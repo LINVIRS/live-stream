@@ -89,10 +89,15 @@ import Danmu from '../../components/common/danmu.vue';
 import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue';
 import MyGifts from '../../common/gift.js';
 import $H from '../../common/request.js'
+import $C from '../../common/config.js'
+import {mapState} from 'vuex';
 export default {
 	components: { gift, Danmu, uniPopup },
 
-
+     mounted() {
+     	//加入直播间
+		this.joinOrLeaveLive('join')
+     },
 	data() {
 		return {
 			statusBarHeight: 0,
@@ -101,7 +106,8 @@ export default {
 			giftActiveId: 0,
 			live:'',
 			detail:'',
-			sign:','
+			id:"",
+			sign:''
 		};
 	},
 	onLoad(option) {
@@ -109,14 +115,30 @@ export default {
 		let res = uni.getSystemInfoSync();
 		this.statusBarHeight = res.statusBarHeight;
 		this.gifts = MyGifts;
-		
-		$H.get('/api/live/read/'+option.id).then(res=>{
-			console.log(res)
+		this.id=option.id
+		$H.get('/api/live/read/'+this.id).then(res=>{
+			
 			this.detail=res.data;
 			this.sign=res.sign
 		})
 	},
+	computed:{
+		...mapState({
+			socket:state=>state.socket,
+			token:state=>state.token
+		})
+	},
 	methods: {
+		//加入或者离开直播间
+		joinOrLeaveLive(type){
+			if(this.socket&&this.token){
+				console.log(this.id)
+				this.socket.emit(type+'Live',{
+					live_id:this.id,
+					token:this.token
+				});
+			}
+		},
 		//打开输入弹幕的对话框
 		openInput() {
 			this.$store.dispatch('authMethod',()=>{
