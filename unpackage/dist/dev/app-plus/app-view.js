@@ -1966,7 +1966,7 @@ var render = function() {
                 attrs: { _i: 22 }
               }),
               _c(
-                "f-list-item",
+                "fListItem",
                 { attrs: { _i: 23 } },
                 [
                   _c(
@@ -1978,7 +1978,7 @@ var render = function() {
                 1
               ),
               _c(
-                "f-list-item",
+                "fListItem",
                 { attrs: { _i: 25 } },
                 [
                   _c(
@@ -1990,7 +1990,7 @@ var render = function() {
                 1
               ),
               _c(
-                "f-list-item",
+                "fListItem",
                 { attrs: { _i: 27 } },
                 [
                   _c(
@@ -2001,8 +2001,8 @@ var render = function() {
                 ],
                 1
               ),
-              _c("f-list-item", { attrs: { _i: 29 } }),
-              _c("f-list-item", {
+              _c("fListItem", { attrs: { _i: 29 } }),
+              _c("fListItem", {
                 attrs: { _i: 30 },
                 on: {
                   click: function($event) {

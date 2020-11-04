@@ -47,13 +47,13 @@
     </view>
   
     <view class="f-divider"></view>
-    <f-list-item icon="iconbizhongguanli" title="我的金币" :showRight="false">
+    <fListItem icon="iconbizhongguanli" title="我的金币" :showRight="false">
       <text class="text-muted font">{{user ? user.coin:0}}金币 立即充值</text>
-    </f-list-item>
-    <f-list-item icon="iconzhengzaizhibo" title="我的直播"><text class="text-muted font">0</text></f-list-item>
-    <f-list-item icon="iconfaxian" title="我的关注"><text class="text-muted font">0</text></f-list-item>
-    <f-list-item icon="iconmore" title="历史记录"></f-list-item>
-  <f-list-item icon="icontuichu" title="退出" @click="logout"></f-list-item>
+    </fListItem>
+    <fListItem icon="iconzhengzaizhibo" title="我的直播"><text class="text-muted font">0</text></fListItem>
+    <fListItem icon="iconfaxian" title="我的关注"><text class="text-muted font">0</text></fListItem>
+    <fListItem icon="iconmore" title="历史记录"></fListItem>
+  <fListItem icon="icontuichu" title="退出" @click="logout"></fListItem>
   </view>
   </view>
 </template>

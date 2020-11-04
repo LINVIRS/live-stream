@@ -1,21 +1,38 @@
 <template>
-	<view>
-		<view class="flex " style="margin-top: 80rpx;">
-			<view class="ml-4"><image src="../../static/gift/2.png" style="width: 70rpx;height: 70rpx;" class="rounded-circle"></image></view>
-			<text style="width: 105rpx; font-size: 32rpx; color: white;">主播100</text>
-			<view style="width: 171rpx;"></view>
-			<!-- 观众列表 -->
-			<scroll-view scroll-x="true" class="flex-1 flex ">
-				<view class="p" v-for="i in 20" :key="i"><image src="../../static/tabbar/min.png" mode="" style="width: 70rpx;height: 70rpx;" class="rounded-circle"></image></view>
-			</scroll-view>
-			<view style="background-color: rgb(202, 68, 74); opacity: 0.8; width: 70rpx; height: 70rpx;" class="rounded-circle align-center justify-center">
-				<text style="font-size: 20rpx; color: white;">1000</text>
+	<view class="" style="background-color: rgb(0,0,0);" :style="'margin-top:' +  statusBarHeight + 'px'">
+		<!-- 头部 -->
+		<view style="position: fixed;left: 0;right: 0;" :style="'margin-top:'+statusBarHeight+'px'">
+			<view style="height: 80rpx;" class="px-2 flex justify-between align-center">
+				<view class="flex rounded-circle" style="width: 325rpx;background-color: rgba(0,0,0,0.4);">
+					<view class="p">
+						<image src="../../static/1.jpg" style="width: 70rpx;height: 70rpx;" class="rounded-circle" mode=""></image>
+					</view>
+					<view class="flex-1 flex flex-column justify-center">
+						<text class="text-white font">陶然然</text>
+						<text class="text-white font-sm">100</text>
+					</view>
+					<view class="p">
+						<view class="rounded-circle flex align-center justify-center bg-main" style="width: 70rpx;height: 70rpx;">
+							<text class="text-white">+</text>
+						</view>
+					</view>
+				</view>
+		
+				<view class="flex rounded-circle" style="width: 324rpx;background-color: rgba(0,0,0,0.4);">
+									<scroll-view scroll-y="true" class="flex flex-1" style="width: 75rpx;">
+										<view class="p" v-for="(item,index) in list" :key="index">
+											<image :src="item.avatar" style="width: 70rpx;height: 70rpx;" class="rounded-circle" mode=""></image>
+										</view>
+									</scroll-view>
+									<view class="p">
+										<view class="rounded-circle flex align-center justify-center bg-main" style="width: 70rpx; height: 70rpx;">
+											<text class="text-white font-sm">{{ list.length }}</text>
+										</view>
+									</view>
+								</view>
+							
+
 			</view>
-		</view>
-		<!-- 字体 -->
-		<view class="flex mt-1 ml-4">
-			<text style="color: rgb(230, 219, 116);">金币</text>
-			<text style="color: white">100</text>
 		</view>
 		<view style="height: 300rpx;"><gift ref="gift" style="position: absolute;"></gift></view>
 
@@ -107,7 +124,8 @@ export default {
 			live:'',
 			detail:'',
 			id:"",
-			sign:''
+			sign:'',
+			list:[]
 		};
 	},
 	onLoad(option) {
@@ -121,6 +139,8 @@ export default {
 			this.detail=res.data;
 			this.sign=res.sign
 		})
+		//监听全局事件
+		uni.$on('live',this.handleLiveEvent)
 	},
 	computed:{
 		...mapState({
@@ -129,6 +149,19 @@ export default {
 		})
 	},
 	methods: {
+		//处理直播间事件
+		handleLiveEvent(e){
+			let d =e.data;
+			switch(e.type){
+				case 'online':
+				if(d.action==='join'){
+					this.list=d.data
+				}
+				break;
+			default:
+				break;
+			}
+		},
 		//加入或者离开直播间
 		joinOrLeaveLive(type){
 			if(this.socket&&this.token){
