@@ -52,7 +52,7 @@
 				<view class="btn btn-icon"><text class="iconfont text-white " style="font-size: 40rpx;">&#xe633;</text></view>
 				<view class="btn btn-icon bg-main" @click="openGift"><text class="iconfont">&#xe67c;</text></view>
 				<view class="btn btn-icon "><text class="iconfont text-white">&#xe7cd;</text></view>
-				<view class="btn btn-icon "><text class="iconfont text-white">&#xe607;</text></view>
+				<view class="btn btn-icon  " @click="back"><text class="iconfont text-white">&#xe607;</text></view>
 			</view>
 		</view>
 		<!-- 弹幕弹出层 -->
@@ -115,6 +115,12 @@ export default {
      	//加入直播间
 		this.joinOrLeaveLive('join')
      },
+	 destroyed(){
+		 //离开直播间
+		 this.joinOrLeaveLive('leave');
+		 //移除全局事件
+		 uni.$off('live',this.handleLiveEvent);
+	 },
 	data() {
 		return {
 			statusBarHeight: 0,
@@ -155,6 +161,10 @@ export default {
 			switch(e.type){
 				case 'online':
 				if(d.action==='join'){
+					this.list=d.data
+				}
+				if(d.action==='leave'){
+					console.log(1111)
 					this.list=d.data
 				}
 				break;
