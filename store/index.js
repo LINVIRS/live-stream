@@ -2,20 +2,48 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 import $H from '../common/request.js'
+import $C from '../common/config.js'
+import io from '../common/uni-socket.io.js'
 export default new Vuex.Store({
 	state: {
 		user: null,
-		token: null
+		token: null,
+		socket: null
 	},
 	actions: {
-		authMethod({state},callback){
-			if(!state.token){
+		//连接Socket
+		connectSocket({
+			state,
+			dispatch
+		}) {
+			const S = io($C.socketUrl, {
+				query: {},
+				transports: ['websocket'],
+				timeout: 5000
+			})
+			//监听连接
+			S.on('connect', () => {
+				console.log('已连接')
+			})
+			//监听失败
+			S.on('erro', () => {
+				console.log('连接失败')
+			})
+			//监听断开
+			S.on('disconnect', () => {
+				console.log('连接断开')
+			})
+		},
+		authMethod({
+			state
+		}, callback) {
+			if (!state.token) {
 				uni.showToast({
-					title:'请先登录',
-					icon:'none'
+					title: '请先登录',
+					icon: 'none'
 				});
 				return uni.navigateTo({
-					url:'/pages/login/login'
+					url: '/pages/login/login'
 				});
 			}
 			callback()
