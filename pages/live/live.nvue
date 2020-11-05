@@ -1,47 +1,65 @@
 <template>
-	<view class="" style="background-color: rgb(0,0,0);" :style="'margin-top:' +  statusBarHeight + 'px'">
-		<!-- 头部 -->
-		<view style="position: fixed;left: 0;right: 0;" :style="'margin-top:'+statusBarHeight+'px'">
-			<view style="height: 80rpx;" class="px-2 flex justify-between align-center">
-				<view class="flex rounded-circle" style="width: 325rpx;background-color: rgba(0,0,0,0.4);">
-					<view class="p">
-						<image src="../../static/1.jpg" style="width: 70rpx;height: 70rpx;" class="rounded-circle" mode=""></image>
-					</view>
-					<view class="flex-1 flex flex-column justify-center">
-						<text class="text-white font">陶然然</text>
-						<text class="text-white font-sm">100</text>
-					</view>
-					<view class="p">
-						<view class="rounded-circle flex align-center justify-center bg-main" style="width: 70rpx;height: 70rpx;">
-							<text class="text-white">+</text>
+	<view>
+			<!-- 头部 -->
+			<view
+				style="height: 160rpx;width: 750rpx; background-color: #0E151D;"
+				class="flex justify-between align-end"
+				:style="'margin-top' + statusBarHeight + 'px'"
+			>
+				<view style="width: 375rpx;height: 120rpx; " class="flex align-center justify-around ">
+					<!-- 个人 -->
+					<view style="width: 150rpx;height: 80rpx;" class="flex">
+						<image
+							:src="detail.user.avatar || '/static/1.jpg'"
+							class="rounded-circle"
+							style="width: 80rpx; height: 80rpx;"
+						/>
+						<view class="flex flex-column">
+							<text class="font-lg" style="color:#CBD3DA;">{{ detail.user.username }}</text>
+							<text class="font-sm" style="color:#CBD3DA;">{{ detail.user.look_count }}</text>
 						</view>
 					</view>
+					<view 
+						style="width: 70rpx; height: 70rpx; background-color:#ca444a; position: absolute; left: 250rpx;" 
+						class="rounded-circle align-center justify-center flex"
+					>
+						<text class="font-lg" style="color:#CBD3DA;">+</text>
+					</view>
 				</view>
-		
-				<view class="flex rounded-circle" style="width: 324rpx;background-color: rgba(0,0,0,0.4);">
-									<scroll-view scroll-y="true" class="flex flex-1" style="width: 75rpx;">
-										<view class="p" v-for="(item,index) in list" :key="index">
-											<image :src="item.avatar" style="width: 70rpx;height: 70rpx;" class="rounded-circle" mode=""></image>
-										</view>
-									</scroll-view>
-									<view class="p">
-										<view class="rounded-circle flex align-center justify-center bg-main" style="width: 70rpx; height: 70rpx;">
-											<text class="text-white font-sm">{{ list.length }}</text>
-										</view>
-									</view>
-								</view>
-							
-
+				<view style="width: 375rpx;height:120rpx;" class="flex justify-center align-center">
+					<scroll-view scroll-x="true" class="flex" style="width:250rpx;">
+						<view class="p" v-for="(item, index) in list" :key="index">
+							<image
+								:src="item.avatar || '../../static/2.jpg'"
+								style="width: 70rpx; height: 70rpx;"
+								class="rounded-circle"
+							/>
+						</view>
+					</scroll-view>
+					<view
+						style="width: 70rpx; height: 70rpx; background-color:#ca444a; position: relative;"
+						class="rounded-circle align-center justify-center flex"
+					>
+						<text class="font-sm" style="color:#CBD3DA;">{{ list.length }}</text>
+					</view>
+				</view>
 			</view>
-		</view>
-		<view style="height: 300rpx;"><gift ref="gift" style="position: absolute;"></gift></view>
+			<!-- 金币区 -->
+					<view style="height: 60rpx; width: 750rpx; background-color:#121416" class="flex">
+						<text class="font-lg" style="color: #F0AD4E; margin-right: 10rpx; margin-left: 25rpx;">金币</text>
+						<text class="font-lg" style="color:#CBD3DA;">{{ detail.coin }}</text>
+					</view>
+					<!-- 礼物区 -->
+					<view style="height: 260rpx; width: 100%; background-color: #121416;" class="flex flex-column">
+						<gift ref="gift"></gift>
+					</view>
 
-		<view style="height: 400rpx;" :style="'margin-top:' + statusBarHeight + 'px'">
+			<view style="height: 550rpx;">
 			<video :src="'https://wlcon.utools.club/live/' + detail.key + '.flv?sign=' + sign" autoplay controls="false" style="width: 100%;"></video>
-		</view>
+	</view>
 
 		<!-- 弹幕 -->
-		<view style="position: fixed;bottom: 100rpx;left: 0;width: 750rpx;height: 400rpx;"><danmu ref="danmu"></danmu></view>
+		<view style="position: fixed;bottom: 100rpx;left: 0;width: 750rpx;height: 400rpx; background-color: #121416;"><danmu ref="danmu"></danmu></view>
 
 		<!-- 底部 -->
 		<view style="height: 120rpx;" class="flex align-center justify-between fixed-bottom ">
@@ -105,95 +123,129 @@ import gift from '../../components/common/gift.vue';
 import Danmu from '../../components/common/danmu.vue';
 import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue';
 import MyGifts from '../../common/gift.js';
-import $H from '../../common/request.js'
-import $C from '../../common/config.js'
-import {mapState} from 'vuex';
+import $H from '../../common/request.js';
+import $C from '../../common/config.js';
+import { mapState } from 'vuex';
 export default {
 	components: { gift, Danmu, uniPopup },
 
-     mounted() {
-     	//加入直播间
-		this.joinOrLeaveLive('join')
-     },
-	 destroyed(){
-		 //离开直播间
-		 this.joinOrLeaveLive('leave');
-		 //移除全局事件
-		 uni.$off('live',this.handleLiveEvent);
-	 },
+	mounted() {
+		//加入直播间
+		this.joinOrLeaveLive('join');
+	},
+	destroyed() {
+		//离开直播间
+		this.joinOrLeaveLive('leave');
+		//移除全局事件
+		uni.$off('live', this.handleLiveEvent);
+	},
 	data() {
 		return {
 			statusBarHeight: 0,
 			content: '',
 			gifts: [],
 			giftActiveId: 0,
-			live:'',
-			detail:'',
-			id:"",
-			sign:'',
-			list:[]
+			live: '',
+			detail: {
+				created_time: '',
+								id: 1,
+								title: '',
+								cover: '',
+								user_id: 0,
+								look_count: 0,
+								coin: '',
+								key: '',
+								status: 0,
+								userId: 0,
+								user: {
+									id: 0,
+									username: '',
+									cover: ''
+								}
+				
+			},
+			id: '',
+			sign: '',
+			list: []
 		};
 	},
 	onLoad(option) {
-	
 		let res = uni.getSystemInfoSync();
 		this.statusBarHeight = res.statusBarHeight;
 		this.gifts = MyGifts;
-		this.id=option.id
-		$H.get('/api/live/read/'+this.id).then(res=>{
+		this.id = option.id;
+		//请求直播间详情数据
+		$H.get('/api/live/read/' + this.id).then(res => {
+			this.detail = res.data;
 			
-			this.detail=res.data;
-			this.sign=res.sign
-		})
+			this.sign = res.sign;
+		});
+		//请求礼物接口
+		$H.get('/api/gift/list').then(res => {
+			this.gifts = res.map(item => {
+				// item.image=$C.imgUrl+item.image
+				return item;
+			});
+		});
+
 		//监听全局事件
-		uni.$on('live',this.handleLiveEvent)
+		uni.$on('live', this.handleLiveEvent);
 	},
-	computed:{
+	computed: {
 		...mapState({
-			socket:state=>state.socket,
-			token:state=>state.token
+			socket: state => state.socket,
+			token: state => state.token
 		})
 	},
 	methods: {
 		//处理直播间事件
-		handleLiveEvent(e){
-			let d =e.data;
-			switch(e.type){
+		handleLiveEvent(e) {
+			let d = e.data;
+			switch (e.type) {
 				case 'online':
-				if(d.action==='join'){
-					this.list=d.data
-				}
-				if(d.action==='leave'){
-					console.log(1111)
-					this.list=d.data
-				}
-				break;
+					if (d.action === 'join') {
+						this.list = d.data;
+					}
+					if (d.action === 'leave') {
+						console.log(1111);
+						this.list = d.data;
+					}
+					break;
 				case 'comment':
-				this.$refs.danmu.send({
-					id:d.id,
-					name:d.user.name,
-					content:d.content
-				})
-				this.content=''
-				this.$refs.input.close()
-				break;
-			default:
-				break;
+					this.$refs.danmu.send({
+						id: d.id,
+						name: d.user.name,
+						content: d.content
+					});
+					this.content = '';
+					this.$refs.input.close();
+					break;
+				case 'gift':
+					this.$refs.gift.send({
+						username: d.username,
+						avatar: d.avatar,
+						gift_name: d.gift_name,
+						gift_image: d.gift_image,
+						num: d.num
+					});
+					break;
+				default:
+					break;
 			}
 		},
 		//加入或者离开直播间
-		joinOrLeaveLive(type){
-			if(this.socket&&this.token){
-				console.log(this.id)
-				this.socket.emit(type+'Live',{
-					live_id:this.id,
-					token:this.token
+		joinOrLeaveLive(type) {
+			if (this.socket && this.token) {
+				console.log(this.id);
+				this.socket.emit(type + 'Live', {
+					live_id: this.id,
+					token: this.token
 				});
 			}
 		},
 		//打开输入弹幕的对话框
 		openInput() {
-			this.$store.dispatch('authMethod',()=>{
+			this.$store.dispatch('authMethod', () => {
 				this.$refs.input.open();
 			});
 		},
@@ -201,26 +253,26 @@ export default {
 		submit() {
 			if (this.content === '') {
 				return uni.showToast({
-					title:'评论内容·不能为空',
-					icon:'none'
+					title: '评论内容·不能为空',
+					icon: 'none'
 				});
 			}
-		if(!this.token&&!this.socket){
-			uni.navigateTo({
-				url:"../login/login"
-			})
-			return uni.showToast({
-				title:"请登录",
-				icon:'none'
-			});
-		}
-		if(this.socket){
-			this.socket.emit('comment',{
-				live_id:this.id,
-				data:this.content,
-				token:this.token
-			})
-		}
+			if (!this.token && !this.socket) {
+				uni.navigateTo({
+					url: '../login/login'
+				});
+				return uni.showToast({
+					title: '请登录',
+					icon: 'none'
+				});
+			}
+			if (this.socket) {
+				this.socket.emit('comment', {
+					live_id: this.id,
+					data: this.content,
+					token: this.token
+				});
+			}
 		},
 		//返回上一层页面
 		back() {
@@ -243,19 +295,28 @@ export default {
 					icon: 'none'
 				});
 			}
+
 			let index = this.gifts.findIndex(item => item.id === this.giftActiveId);
 			if (index === -1) {
 				return;
 			}
 			let g = this.gifts[index];
-			this.$refs.gift.send({
-				userName: '王林',
-				avatar: '',
-				gift_name: g.name,
-				gift_image: g.image,
-				num: 10
-			});
-			this.closeGift();
+			if (!this.token && !this.socket) {
+				uni.navigateTo({
+					url: '../login/login'
+				});
+				return uni.showToast({
+					title: '请登录',
+					icon: 'none'
+				});
+			}
+			if (this.socket) {
+				this.socket.emit('gift', {
+					live_id: this.id,
+					gift_id: g.id,
+					token: this.token
+				});
+			}
 		},
 		openCoin() {
 			uni.navigateTo({
