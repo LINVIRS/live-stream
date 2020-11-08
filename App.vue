@@ -2,20 +2,20 @@
 export default {
 	onLaunch: function() {
 		console.log('App Launch');
-		this.$store.dispatch('connectSocket');
 		const domModule = weex.requireModule('dom');
+		this.$store.dispatch('connectSocket');
 		domModule.addRule('fontFace', {
 			fontFamily: 'iconfont',
 			src: "url('http://at.alicdn.com/t/font_1859985_7mxozsfdvib.ttf')"
 		});
 		// 监听底部导航中间凸起按钮
 		uni.onTabBarMidButtonTap(() => {
-			//页面跳转
 			this.authJump({
-				//出现路径错误 不带‘/’ 找不到路径
 				url: '/pages/create-live/create-live'
 			});
-			console.log('点击了中间按钮');
+			// uni.navigateTo({
+			// 	url: '/pages/create-live/create-live'
+			// });
 		});
 		this.$store.dispatch('initUser');
 	},

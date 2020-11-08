@@ -1,10 +1,11 @@
+import $C from './config.js'
 export default {
 	// 全局配置
 	common: {
 		// #ifndef H5
-		baseUrl: "https://wltest.utools.club",
+		baseUrl: $C.baseUrl+"/api",
 		// #endif
-		// #ifdef H5
+		// #ifdef H5 
 		baseUrl: "/api",
 		// #endif
 		header: {
